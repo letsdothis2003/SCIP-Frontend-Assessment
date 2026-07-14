@@ -8,9 +8,10 @@ const nextConfig = {
   reactStrictMode: true,
   devIndicators: false,
   allowedDevOrigins: ['127.0.0.1', 'localhost'],
-  // Always use basePath for GitHub Pages subdirectory deployment
-  basePath: '/SCIP-Frontend-Assessment',
-  assetPrefix: '/SCIP-Frontend-Assessment',
+  // basePath only applied during static build, not in dev mode
+  ...(process.env.NEXT_PUBLIC_BASE_PATH ? {
+    basePath: '/SCIP-Frontend-Assessment',
+  } : {}),
 };
 
 module.exports = nextConfig;

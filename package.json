@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "export": "next build",
+    "export": "NEXT_PUBLIC_BASE_PATH=true next build",
     "predeploy": "npm run export",
     "deploy": "gh-pages -d out --repo=https://github.com/letsdothis2003/SCIP-Frontend-Assessment.git"
   },

@@ -29,7 +29,12 @@ export default function Home() {
         setIsLoading(true);
         setError(null);
 
-        const response = await fetch(GIST_RAW_URL);
+        const response = await fetch(GIST_RAW_URL, {
+          headers: {
+            'Accept': 'application/json',
+          },
+          mode: 'cors',
+        });
         if (!response.ok) {
           throw new Error(`Request failed with status ${response.status}`);
         }
