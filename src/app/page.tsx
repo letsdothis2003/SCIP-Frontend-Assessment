@@ -7,6 +7,8 @@ import { JobFilters } from '@/listing/JobFilters';
 import { JobList } from '@/listing/JobList';
 import companyLogo from './SCIP Logo.png';
 
+const GIST_RAW_URL = 'https://gist.githubusercontent.com/letsdothis2003/5db6dbb14f1cea13818e137e3aabd0f7/raw';
+
 const DEFAULT_FILTERS: FilterState = { searchQuery: '', department: '', location: '', type: '' };
 
 export default function Home() {
@@ -20,28 +22,40 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Load the job data once on first render via our secure API proxy.
-    const fetchJobs = async () => {
+    let isMounted = true;
+
+    const loadJobs = async () => {
       try {
         setIsLoading(true);
         setError(null);
 
-        const response = await fetch('/api/jobs');
+        const response = await fetch(GIST_RAW_URL);
         if (!response.ok) {
           throw new Error(`Request failed with status ${response.status}`);
         }
 
         const data = (await response.json()) as Job[];
-        setJobs(data);
+
+        if (isMounted) {
+          setJobs(data);
+        }
       } catch (err) {
         console.error('Unable to load jobs:', err);
-        setError('We could not load the current openings. Please refresh and try again.');
+        if (isMounted) {
+          setError('We could not load the current openings. Please refresh and try again.');
+        }
       } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     };
 
-    fetchJobs();
+    loadJobs();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   // Build the filter choices from the loaded jobs.

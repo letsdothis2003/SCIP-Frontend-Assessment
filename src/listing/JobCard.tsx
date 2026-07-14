@@ -1,90 +1,123 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Job } from '@/jobdata/job';
 
 interface JobCardProps {
   job: Job;
 }
 
+const formatFriendlyDate = (dateString: string): string => {
+  try {
+    const parsedDate = new Date(dateString);
+    /* If Git or the backend throws us a weird/invalid date format, we recover gracefully */
+    if (isNaN(parsedDate.getTime())) return dateString;
+    
+    return parsedDate.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  } catch {
+    return dateString; /* Fallback to raw text rather than breaking the UI */
+  }
+};
+
 export const JobCard: React.FC<JobCardProps> = ({ job }) => {
-  // Tracks whether the detail panel is open or collapsed.
+  /* Keeps track of our collapsible details tray (Requirements, Benefits, Apply Action) */
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const formatFriendlyDate = (dateString: string) => {
-    // Convert a raw ISO date into a readable date label.
-    // If the date is invalid, just fall back to the original text.
-    try {
-      return new Date(dateString).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      });
-    } catch {
-      return dateString;
+  /* Memoizing this so we don't recalculate dates unless the job object itself actually changes.
+     Super helpful when users are typing fast and spamming search filters! */
+  const formattedDate = useMemo(() => formatFriendlyDate(job.postedAt), [job.postedAt]);
+
+  /* Safe window wrapper to prevent server-side rendering (SSR) builds from complaining */
+  const handleApplyClick = () => {
+    if (typeof window !== 'undefined') {
+      const subject = encodeURIComponent(`Application for ${job.title}`);
+      window.location.href = `mailto:scipleaders111@gmail.com?subject=${subject}`;
     }
   };
 
-  const typeBadgeStyles = 'inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] bg-rose-600 text-white border border-rose-700';
+  /* Reusable Tailwind classes to keep the badge looking clean and bold */
+  const typeBadgeStyles = 'self-start inline-flex items-center rounded-full px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] bg-rose-600 text-white border border-rose-700';
 
   return (
-    <article className="brand-card">
+    <article className="brand-card p-6 bg-white border border-slate-200/60 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200">
+      
+      /* Top section: Company name, posting date, title, and attributes */
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="space-y-2">
-          <div className="flex flex-wrap items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] text-black/60">
+          
+          /* Metadata Row */
+          <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
             <span>{job.company}</span>
-            <span className="text-black/40">•</span>
-            <span>{formatFriendlyDate(job.postedAt)}</span>
+            <span className="text-slate-300">•</span>
+            <span>{formattedDate}</span>
           </div>
 
-          <h3 className="text-xl font-semibold text-black">{job.title}</h3>
+          <h3 className="text-xl font-bold text-slate-900">{job.title}</h3>
 
-          <div className="flex flex-wrap items-center gap-2 text-sm muted">
-            <span className="rounded-full border border-sky-300 bg-sky-50 px-3 py-1 text-sky-800">{job.department}</span>
-            <span className="rounded-full border border-sky-300 bg-sky-50 px-3 py-1 text-sky-800">{job.location}</span>
-            <span className="rounded-full border border-sky-300 bg-sky-50 px-3 py-1 text-sky-800">{job.salary}</span>
+          /*Badges to show info for job */
+          <div className="flex flex-wrap items-center gap-2 text-xs font-semibold mt-2">
+            <span className="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sky-800">{job.department}</span>
+            <span className="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sky-800">{job.location}</span>
+            <span className="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sky-800">{job.salary}</span>
           </div>
         </div>
 
+        /* Work environment indicator (Remote, Hybrid, On-site) */
         <span className={typeBadgeStyles}>
           {job.type}
         </span>
       </div>
 
-      <p className="mt-4 text-sm leading-6 muted">{job.description}</p>
+      
+      <p className="mt-4 text-sm leading-relaxed text-slate-600">{job.description}</p>
 
-      <div className={`overflow-hidden ${isExpanded ? 'mt-6 max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+      /* This is for transition-aware drawer. the height and opacity ease in together. */
+      <div 
+        className={`overflow-hidden transition-all duration-300 ease-in-out ${
+          isExpanded ? 'mt-6 max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        /* We keep the elements mounted to preserve height animation, 
+            but avoid rendering inner lists unnecessarily if collapsed. */
         {isExpanded && (
-          <div className="grid gap-6 border-t border-black/10 pt-6 md:grid-cols-2">
+          <div className="grid gap-6 border-t border-slate-200 pt-6 md:grid-cols-2">
+            
+            {/* Left Column: Requirements list */}
             <div>
-              <h4 className="text-sm font-semibold text-black">Requirements</h4>
-              <ul className="mt-3 space-y-2 text-sm muted">
+              <h4 className="text-sm font-bold text-slate-900">Requirements</h4>
+              <ul className="mt-3 space-y-2.5 text-sm text-slate-600">
                 {job.requirements.map((requirement, index) => (
-                  <li key={index} className="flex gap-2">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-sky-800" />
+                  <li key={`req-${index}`} className="flex items-start gap-2.5">
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-sky-800" />
                     <span>{requirement}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
+            /* Right side is benefits list */
             <div>
-              <h4 className="text-sm font-semibold text-black">Benefits</h4>
-              <ul className="mt-3 space-y-2 text-sm muted">
+              <h4 className="text-sm font-bold text-slate-900">Benefits</h4>
+              <ul className="mt-3 space-y-2.5 text-sm text-slate-600">
                 {job.benefits.map((benefit, index) => (
-                  <li key={index} className="flex gap-2">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-rose-600" />
+                  <li key={`ben-${index}`} className="flex items-start gap-2.5">
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-rose-600" />
                     <span>{benefit}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="md:col-span-2 flex justify-end">
+            {/* Application CTA Row */}
+            <div className="md:col-span-2 flex justify-end pt-4">
               <button
                 type="button"
-                className="cta-red-button"
-                onClick={() => window.location.href = `mailto:careers@northstar.example?subject=Application%20for%20${encodeURIComponent(job.title)}`}
+                className="cta-red-button px-6 py-2.5 bg-rose-600 text-white font-bold rounded-xl shadow hover:bg-rose-700 transition"
+                onClick={handleApplyClick}
               >
                 Apply now
               </button>
@@ -93,11 +126,12 @@ export const JobCard: React.FC<JobCardProps> = ({ job }) => {
         )}
       </div>
 
-      <div className="mt-6 flex justify-center">
+      /* This is used expand/collapse card details */
+      <div className="mt-6 flex justify-center border-t border-slate-100 pt-4">
         <button
           type="button"
-          onClick={() => setIsExpanded((value) => !value)}
-          className="cta-red-button"
+          onClick={() => setIsExpanded((prev) => !prev)}
+          className="px-5 py-2 text-sm font-bold text-slate-700 border border-slate-300 hover:bg-slate-50 transition rounded-xl"
           aria-expanded={isExpanded}
         >
           {isExpanded ? 'Hide details' : 'View details'}

@@ -4,12 +4,13 @@
   "private": true,
   "homepage": "https://letsdothis2003.github.io/SCIP-Frontend-Assessment",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --hostname 127.0.0.1 --port 3001",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d out --repo=git@github.com:letsdothis2003/SCIP-Frontend-Assessment.git"
+    "export": "next build",
+    "predeploy": "npm run export",
+    "deploy": "gh-pages -d out --repo=https://github.com/letsdothis2003/SCIP-Frontend-Assessment.git"
   },
   "dependencies": {
     "next": "^16.3.0-canary.85",
