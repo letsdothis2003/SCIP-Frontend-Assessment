@@ -122,7 +122,7 @@ export const JobCard: React.FC<JobCardProps> = ({ job }) => {
         <button
           type="button"
           onClick={() => setIsExpanded((prev) => !prev)}
-          className="px-5 py-2 text-sm font-bold text-slate-700 border border-slate-300 hover:bg-slate-50 transition rounded-xl"
+          className="rounded-xl border border-rose-600 bg-rose-600 px-5 py-2 text-sm font-bold text-white transition hover:bg-rose-700"
           aria-expanded={isExpanded}
         >
           {isExpanded ? 'Hide details' : 'View details'}
