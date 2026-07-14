@@ -123,7 +123,7 @@ export default function Home() {
               Careers
             </h1>
             <p className="text-lg sm:text-xl font-medium leading-relaxed text-white/95">
-              Find work that moves you forward. Discover roles across SCIP. Everyone has a chance to be a Global Leader!
+              Discover roles across SCIP as everyone has a chance to be a global leader!
             </p>
           </div>
 
