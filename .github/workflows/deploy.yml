@@ -1,0 +1,18 @@
+
+#!/bin/bash
+# deploy.sh
+
+echo "🧹 Cleaning old builds..."
+rm -rf .next out
+
+echo "📦 Building Next.js app..."
+npm run build
+
+echo "📄 Creating .nojekyll..."
+touch out/.nojekyll
+
+echo "🚀 Deploying to gh-pages..."
+npx gh-pages -d out -b gh-pages --force
+
+echo "Deployment complete!"
+echo "click: https://letsdothis2003.github.io/SCIP-Frontend-Assessment"

@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "eslint",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d out --repo=git@github.com:letsdothis2003/SCIP-Frontend-Assessment.git"
+    "deploy": "gh-pages -d out -b gh-pages"
   },
   "dependencies": {
     "next": "^16.3.0-canary.85",
