@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+:root {
+  --background: white;
+  --foreground: black;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: black;
+    --foreground: whitesmoke;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Times New Roman", Times, serif;
+}
+
+/* Brand utilities following SCIP 60/30/10 rule */
+.brand-blue-panel {
+  @apply bg-sky-800 text-white rounded-2xl p-6 shadow-sm;
+}
+
+.brand-blue-spot {
+  @apply bg-sky-50 text-sky-800;
+}
+
+.brand-red-text {
+  @apply text-rose-600;
+}
+
+
+/* Layout helper to keep logo and badge centered and readable */
+@utility hero-logo-wrap {
+  @apply flex flex-col items-center gap-4; /* Slightly increased gap for better breathing room */
+}
+
+/* Add this utility to make the image itself scale up */
+@utility hero-logo-large {
+  @apply h-32 w-auto max-w-full object-contain; /* Increased height from h-20 to h-32 */
+}
+.badge-careers {
+  @apply rounded-full border border-sky-800 bg-sky-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-sky-800;
+}
+
+.brand-card {
+  @apply rounded-2xl border border-sky-200 bg-sky-50 p-6 shadow-sm;
+}
+
+.muted {
+  @apply text-slate-700;
+}
+
+.cta-red-button {
+  @apply rounded-lg border border-rose-600 bg-rose-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-rose-700;
+}
+
+.cta-red-link {
+  @apply text-rose-600 font-semibold hover:text-rose-700;
+}
+
+/* Form controls */
+.form-control {
+  @apply w-full rounded-xl border border-sky-300 bg-sky-50 px-4 py-3 text-sm text-sky-800 outline-none ring-1 ring-sky-100 transition focus:border-sky-500 focus:ring-sky-200;
+}
+.form-select {
+  @apply w-full rounded-xl border border-sky-300 bg-sky-50 px-3 py-3 text-sm text-sky-800 outline-none ring-1 ring-sky-100 transition focus:border-sky-500 focus:ring-sky-200;
+}
+
+.filter-clear-button {
+  @apply rounded-full border border-rose-600 bg-rose-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-rose-700;
+}
+
+.footer-brand {
+  @apply bg-sky-950 text-white border-none;
+}
