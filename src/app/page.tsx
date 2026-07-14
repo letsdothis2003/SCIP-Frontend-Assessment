@@ -7,10 +7,46 @@ import { JobFilters } from '@/listing/JobFilters';
 import { JobList } from '@/listing/JobList';
 import companyLogo from './SCIP Logo.png';
 
-const repoBasePath = process.env.NEXT_PUBLIC_BASE_PATH === 'true' ? '/SCIP-Frontend-Assessment' : '';
-const JOBS_URL = `${repoBasePath}/jobs.json`;
-
+const DEFAULT_GIST_URL = process.env.NEXT_PUBLIC_GIST_URL || 'https://gist.github.com/letsdothis2003/5db6dbb14f1cea13818e137e3aabd0f7';
 const DEFAULT_FILTERS: FilterState = { searchQuery: '', department: '', location: '', type: '' };
+
+const extractGistId = (sourceUrl: string): string | null => {
+  try {
+    const parsedUrl = new URL(sourceUrl);
+    const pathname = parsedUrl.pathname;
+    const hostname = parsedUrl.hostname.toLowerCase();
+
+    if (hostname === 'api.github.com') {
+      const match = pathname.match(/\/gists\/([a-f0-9]{7,40})(?:\/|$)/i);
+      return match?.[1] ?? null;
+    }
+
+    if (hostname === 'gist.github.com') {
+      const match = pathname.match(/\/[^/]+\/([a-f0-9]{7,40})(?:\/|$)/i);
+      return match?.[1] ?? null;
+    }
+
+    if (hostname === 'gist.githubusercontent.com') {
+      const match = pathname.match(/\/([a-f0-9]{7,40})(?:\/|$)/i);
+      return match?.[1] ?? null;
+    }
+  } catch {
+    // Fall back to a regex-based parse below.
+  }
+
+  const fallbackMatch = sourceUrl.match(/(?:gist\.github\.com\/[^/]+\/|gist\.github\.com\/|gists\/)([a-f0-9]{7,40})(?:\/|$)/i);
+  return fallbackMatch?.[1] ?? null;
+};
+
+const getGistApiUrl = (sourceUrl: string): string => {
+  const gistId = extractGistId(sourceUrl);
+
+  if (!gistId) {
+    throw new Error('Please provide a valid GitHub gist URL.');
+  }
+
+  return `https://api.github.com/gists/${gistId}`;
+};
 
 export default function Home() {
   // The main data state for this page.
@@ -30,16 +66,58 @@ export default function Home() {
         setIsLoading(true);
         setError(null);
 
-        const response = await fetch(JOBS_URL, {
-          headers: {
-            'Accept': 'application/json',
-          },
+        const queryGistUrl =
+          typeof window !== 'undefined'
+            ? new URLSearchParams(window.location.search).get('gistUrl')
+            : null;
+
+        const sourceUrl = queryGistUrl?.trim() || DEFAULT_GIST_URL;
+        const gistApiUrl = getGistApiUrl(sourceUrl);
+
+        // Step 1: Fetch Gist metadata
+        const gistResponse = await fetch(gistApiUrl, {
+          headers: { Accept: 'application/vnd.github.v3+json' },
         });
-        if (!response.ok) {
-          throw new Error(`Request failed with status ${response.status}`);
+        if (!gistResponse.ok) {
+          throw new Error(`Gist API request failed with status ${gistResponse.status}`);
+        }
+        const gistData = await gistResponse.json();
+
+        const files = gistData.files;
+        const fileNames = Object.keys(files || {});
+        let jsonFileName = fileNames.find((name) => name.endsWith('.json'));
+
+        if (!jsonFileName) {
+          jsonFileName = fileNames[0];
         }
 
-        const data = (await response.json()) as Job[];
+        if (!jsonFileName) {
+          throw new Error('No files found in the Gist.');
+        }
+
+        const file = files[jsonFileName];
+        const rawUrl = file?.raw_url;
+
+        if (!rawUrl) {
+          throw new Error('The selected gist does not expose a raw JSON file.');
+        }
+
+        // Step 2: Fetch the raw content of the JSON file
+        const jobsResponse = await fetch(rawUrl);
+        if (!jobsResponse.ok) {
+          throw new Error(`Failed to fetch job data: ${jobsResponse.status}`);
+        }
+
+        const payload = await jobsResponse.json();
+        const data = Array.isArray(payload)
+          ? payload
+          : Array.isArray(payload?.jobs)
+            ? payload.jobs
+            : null;
+
+        if (!Array.isArray(data)) {
+          throw new Error('The gist JSON must resolve to a jobs array.');
+        }
 
         if (isMounted) {
           setJobs(data);
