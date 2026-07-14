@@ -13,7 +13,7 @@ export interface Job {
   /** The location details (e.g., 'Remote', 'New York', 'London', 'San Francisco') */
   location: string;
   /** The employment agreement type */
-  type: 'Full-time' | 'Contract';
+  type: string;
   /** The salary range offered */
   salary: string;
   /** A brief summary of the role and expectations */

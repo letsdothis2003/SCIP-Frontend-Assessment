@@ -25,14 +25,13 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Load the job data once on first render.
-    // This keeps the page dynamic while still using a simple JSON file.
+    // Load the job data once on first render via our secure API proxy.
     const fetchJobs = async () => {
       try {
         setIsLoading(true);
         setError(null);
 
-        const response = await fetch('/data/jobs.json');
+        const response = await fetch('/api/jobs');
         if (!response.ok) {
           throw new Error(`Request failed with status ${response.status}`);
         }
@@ -78,22 +77,20 @@ export default function Home() {
     <div className="min-h-screen bg-white text-black">
       <header className="border-b border-black/10 bg-white">
         <div className="mx-auto max-w-6xl px-6 py-16 lg:px-8">
-          <div className="grid gap-8 lg:grid-cols-3 lg:items-end">
-            <div className="lg:col-span-2">
-              <div className="hero-logo-wrap mb-2">
-                <Image src={companyLogo} alt="SCIP logo" width={340} height={110} className="h-24 w-auto object-contain" />
-                <span className="badge-careers">Careers</span>
-              </div>
-
-              <h1 className="text-4xl font-semibold tracking-tight text-black sm:text-5xl">
-                <span className="text-sky-800">Find work that moves you forward</span>.
-              </h1>
-              <p className="mt-4 text-lg text-black/70">
-                Discover roles across SCIP. Everyone has a change to be a Global Leader!
-              </p>
+          <div className="flex flex-col items-center text-center">
+            <div className="hero-logo-wrap mb-4">
+              <Image src={companyLogo} alt="SCIP logo" width={340} height={110} className="h-48 w-auto object-contain" />
+              <span className="badge-careers">Careers</span>
             </div>
 
-            <div className="lg:col-span-1">
+            <h1 className="text-4xl font-semibold tracking-tight text-black sm:text-5xl">
+              <span className="text-sky-800">Find work that moves you forward</span>.
+            </h1>
+            <p className="mt-4 text-lg text-black/70">
+              Discover roles across SCIP. Everyone has a change to be a Global Leader!
+            </p>
+
+            <div className="mt-8 w-full max-w-sm">
               <div className="brand-blue-panel">
                 <p className="text-sm text-white/90">Currently hiring</p>
                 <p className="mt-1 text-2xl font-semibold text-white">{jobs.length} openings</p>
