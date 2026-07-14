@@ -2,3 +2,7 @@ node_modules/
 .next/
 .env*.local
 public/jobs.json
+.next/
+out/
+.nojekyll
+src/config.ts

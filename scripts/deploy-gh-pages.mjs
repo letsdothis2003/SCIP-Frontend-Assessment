@@ -9,9 +9,22 @@ if (!existsSync(outDir)) {
   throw new Error('out directory not found. Run npm run export first.');
 }
 
-execSync(`git init`, { stdio: 'inherit' });
-execSync(`git checkout -B gh-pages`, { stdio: 'inherit' });
+process.chdir(outDir);
+
+execSync('git init', { stdio: 'inherit' });
+execSync('git checkout -B gh-pages', { stdio: 'inherit' });
 execSync(`git remote add origin ${repoUrl}`, { stdio: 'inherit' });
-execSync(`git add .`, { stdio: 'inherit' });
-execSync(`git commit -m "Deploy GitHub Pages"`, { stdio: 'inherit' });
-execSync(`git push -f origin gh-pages`, { stdio: 'inherit' });
+
+if (!existsSync('.nojekyll')) {
+  // ensure Jekyll is disabled on GitHub Pages
+  execSync('touch .nojekyll', { stdio: 'inherit' });
+}
+
+execSync('git add --all', { stdio: 'inherit' });
+try {
+  execSync('git commit -m "Deploy GitHub Pages"', { stdio: 'inherit' });
+} catch (err) {
+  // commit can fail if there are no changes; ignore
+}
+
+execSync('git push -f origin gh-pages', { stdio: 'inherit' });

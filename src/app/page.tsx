@@ -1,3 +1,4 @@
+// src/app/page.tsx
 'use client';
 
 import Image from 'next/image';
@@ -7,8 +8,15 @@ import { JobFilters } from '@/listing/JobFilters';
 import { JobList } from '@/listing/JobList';
 import companyLogo from './SCIP Logo.png';
 
-const repoBasePath = process.env.NEXT_PUBLIC_BASE_PATH === 'true' ? '/SCIP-Frontend-Assessment' : '';
-const JOBS_URL = `${repoBasePath}/jobs.json`;
+// Import the config values (these are NOT committed to git, DO NOT DO THAT)
+import { GIST_API_URL } from '@/config';  // adjust path if needed
+
+// The GIST_ID is now hidden inside config.ts – we only use the full URL.
+// No need to hardcode the Gist ID or API URL here anymore.
+
+// Gist ID extracted from the provided script URL
+// const GIST_ID = '5db6dbb14f1cea13818e137e3aabd0f7'; // moved to config.ts
+// const GIST_API_URL = `https://api.github.com/gists/${GIST_ID}`; // moved to config.ts
 
 const DEFAULT_FILTERS: FilterState = { searchQuery: '', department: '', location: '', type: '' };
 
@@ -30,16 +38,36 @@ export default function Home() {
         setIsLoading(true);
         setError(null);
 
-        const response = await fetch(JOBS_URL, {
-          headers: {
-            'Accept': 'application/json',
-          },
+        // Step 1: Fetch Gist metadata using the config-provided URL
+        const gistResponse = await fetch(GIST_API_URL, {
+          headers: { Accept: 'application/vnd.github.v3+json' },
         });
-        if (!response.ok) {
-          throw new Error(`Request failed with status ${response.status}`);
+        if (!gistResponse.ok) {
+          throw new Error(`Gist API request failed with status ${gistResponse.status}`);
+        }
+        const gistData = await gistResponse.json();
+
+        // Find the first file that ends with .json, or fallback to the first file
+        const files = gistData.files;
+        const fileNames = Object.keys(files);
+        let jsonFileName = fileNames.find((name) => name.endsWith('.json'));
+        if (!jsonFileName) {
+          // If no .json file, use the first file (assume it's JSON)
+          jsonFileName = fileNames[0];
+        }
+        if (!jsonFileName) {
+          throw new Error('No files found in the Gist.');
         }
 
-        const data = (await response.json()) as Job[];
+        const file = files[jsonFileName];
+        const rawUrl = file.raw_url;
+
+        // Step 2: Fetch the raw content of the JSON file
+        const jobsResponse = await fetch(rawUrl);
+        if (!jobsResponse.ok) {
+          throw new Error(`Failed to fetch job data: ${jobsResponse.status}`);
+        }
+        const data = (await jobsResponse.json()) as Job[];
 
         if (isMounted) {
           setJobs(data);
