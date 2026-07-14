@@ -1,9 +1,17 @@
-import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  /* config options here */
-  devIndicators: false,
-  allowedDevOrigins: ['127.0.0.1', 'localhost'],
+
+
+
+
+const nextConfig = {
+  output: 'export',
+  images: {
+    unoptimized: true,
+  },
+  // For repository subdirectory: https://letsdothis2003.github.io/SCIP-Frontend-Assessment
+  basePath: '/SCIP-Frontend-Assessment',
+  assetPrefix: '/SCIP-Frontend-Assessment',
+  trailingSlash: true,
 };
 
-export default nextConfig;
+module.exports = nextConfig;

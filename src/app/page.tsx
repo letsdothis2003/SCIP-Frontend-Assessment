@@ -7,12 +7,7 @@ import { JobFilters } from '@/listing/JobFilters';
 import { JobList } from '@/listing/JobList';
 import companyLogo from './SCIP Logo.png';
 
-const DEFAULT_FILTERS: FilterState = {
-  searchQuery: '',
-  department: '',
-  location: '',
-  type: '',
-};
+const DEFAULT_FILTERS: FilterState = { searchQuery: '', department: '', location: '', type: '' };
 
 export default function Home() {
   // The main data state for this page.
@@ -51,9 +46,13 @@ export default function Home() {
 
   // Build the filter choices from the loaded jobs.
   // That way the dropdown values always match available data.
-  const departments = useMemo(() => Array.from(new Set(jobs.map((job) => job.department))).sort(), [jobs]);
-  const locations = useMemo(() => Array.from(new Set(jobs.map((job) => job.location))).sort(), [jobs]);
-  const types = useMemo(() => Array.from(new Set(jobs.map((job) => job.type))).sort(), [jobs]);
+  const { departments, locations, types } = useMemo(() => {
+    return {
+      departments: Array.from(new Set(jobs.map((job) => job.department))).sort(),
+      locations: Array.from(new Set(jobs.map((job) => job.location))).sort(),
+      types: Array.from(new Set(jobs.map((job) => job.type))).sort(),
+    };
+  }, [jobs]);
 
   const filteredJobs = useMemo(() => {
     const query = filters.searchQuery.trim().toLowerCase();
@@ -75,32 +74,49 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white text-black">
-      <header className="border-b border-black/10 bg-white">
-        <div className="mx-auto max-w-6xl px-6 py-16 lg:px-8">
-          <div className="flex flex-col items-center text-center">
-            <div className="hero-logo-wrap mb-4">
-              <Image src={companyLogo} alt="SCIP logo" width={340} height={110} className="h-48 w-auto object-contain" />
-              <span className="badge-careers">Careers</span>
-            </div>
+      {/* Added a grid texture because the plain white looked boring */}
+      <header className="relative overflow-hidden border-b border-slate-200 bg-slate-100">
+        {/* This is a placeholder for now*/}
+        <div 
+          className="absolute inset-0 opacity-[0.03] pointer-events-none"
+          style={{
+            backgroundImage: `
+              linear-gradient(to right, #000 1px, transparent 1px),
+              linear-gradient(to bottom, #000 1px, transparent 1px)
+            `,
+            backgroundSize: '24px 24px'
+          }}
+        />
 
-            <h1 className="text-4xl font-semibold tracking-tight text-black sm:text-5xl">
-              <span className="text-sky-800">Find work that moves you forward</span>.
-            </h1>
-            <p className="mt-4 text-lg text-black/70">
-              Discover roles across SCIP. Everyone has a change to be a Global Leader!
-            </p>
-
-            <div className="mt-8 w-full max-w-sm">
-              <div className="brand-blue-panel">
-                <p className="text-sm text-white/90">Currently hiring</p>
-                <p className="mt-1 text-2xl font-semibold text-white">{jobs.length} openings</p>
-                <p className="mt-2 text-sm text-white/90">Remote &amp; on-site roles</p>
-              </div>
-            </div>
+        <div className="relative z-10 mx-auto max-w-4xl px-6 py-16 flex flex-col items-center text-center">
+          
+          {/* Centered Logo - Height expanded to h-64 to let the width grow larger */}
+          <div className="mb-8 w-full flex justify-center">
+            <Image 
+              src={companyLogo} 
+              alt="SCIP logo" 
+              width={600} 
+              height={180} 
+              className="h-64 w-auto object-contain" 
+              priority
+            />
           </div>
+
+          {/* Blue Highlight for banner */}
+          <div className="w-full max-w-3xl bg-sky-800 text-white rounded-2xl p-8 md:p-10 shadow-lg border border-sky-700/50">
+            {/* Bolded & Underlined Careers so people can see it better */}
+            <h1 className="text-3xl font-extrabold tracking-widest uppercase mb-6 underline decoration-sky-300 decoration-4 underline-offset-8">
+              Careers
+            </h1>
+            <p className="text-lg sm:text-xl font-medium leading-relaxed text-white/95">
+              Find work that moves you forward. Discover roles across SCIP. Everyone has a chance to be a Global Leader!
+            </p>
+          </div>
+
         </div>
       </header>
 
+      {/* Main Content Area */}
       <main className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-8 lg:px-8">
         <JobFilters
           filters={filters}
@@ -121,7 +137,8 @@ export default function Home() {
         )}
       </main>
 
-      <footer className="footer-brand px-6 py-8 text-center text-sm text-white">
+      {/* Footer */}
+      <footer className="footer-brand bg-sky-900 px-6 py-8 text-center text-sm text-white mt-12">
         <p>© {new Date().getFullYear()} SCIP. All rights reserved.</p>
       </footer>
     </div>
