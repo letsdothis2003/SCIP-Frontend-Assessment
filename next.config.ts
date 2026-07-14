@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const repoBasePath = process.env.NEXT_PUBLIC_BASE_PATH === 'true' ? '/SCIP-Frontend-Assessment' : '';
+
 const nextConfig = {
   output: 'export',
   images: {
@@ -8,9 +10,9 @@ const nextConfig = {
   reactStrictMode: true,
   devIndicators: false,
   allowedDevOrigins: ['127.0.0.1', 'localhost'],
-  // basePath only applied during static build, not in dev mode
-  ...(process.env.NEXT_PUBLIC_BASE_PATH ? {
-    basePath: '/SCIP-Frontend-Assessment',
+  ...(repoBasePath ? {
+    basePath: repoBasePath,
+    assetPrefix: repoBasePath,
   } : {}),
 };
 

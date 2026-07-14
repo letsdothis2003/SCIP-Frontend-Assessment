@@ -7,7 +7,8 @@ import { JobFilters } from '@/listing/JobFilters';
 import { JobList } from '@/listing/JobList';
 import companyLogo from './SCIP Logo.png';
 
-const GIST_RAW_URL = 'https://gist.githubusercontent.com/letsdothis2003/5db6dbb14f1cea13818e137e3aabd0f7/raw';
+const repoBasePath = process.env.NEXT_PUBLIC_BASE_PATH === 'true' ? '/SCIP-Frontend-Assessment' : '';
+const JOBS_URL = `${repoBasePath}/jobs.json`;
 
 const DEFAULT_FILTERS: FilterState = { searchQuery: '', department: '', location: '', type: '' };
 
@@ -29,11 +30,10 @@ export default function Home() {
         setIsLoading(true);
         setError(null);
 
-        const response = await fetch(GIST_RAW_URL, {
+        const response = await fetch(JOBS_URL, {
           headers: {
             'Accept': 'application/json',
           },
-          mode: 'cors',
         });
         if (!response.ok) {
           throw new Error(`Request failed with status ${response.status}`);
