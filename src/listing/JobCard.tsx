@@ -7,7 +7,7 @@ interface JobCardProps {
   job: Job;
 }
 
-// Just making the date look friendly for humans
+//This is just to get the accurate date for posting
 const formatFriendlyDate = (dateString: string) => {
   const parsed = new Date(dateString);
   if (isNaN(parsed.getTime())) return dateString;
@@ -21,7 +21,7 @@ const formatFriendlyDate = (dateString: string) => {
 export const JobCard: React.FC<JobCardProps> = ({ job }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // I didn’t set up a backend or contact form, so everything goes to scipleaders111@gmail.com
+  // I didn't set up a backend or contact form, so everything goes to scipleaders111@gmail.com
   const handleApplyClick = () => {
     const subject = encodeURIComponent(`Application for ${job.title}`);
     window.location.href = `mailto:scipleaders111@gmail.com?subject=${subject}`;
@@ -34,9 +34,9 @@ export const JobCard: React.FC<JobCardProps> = ({ job }) => {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="space-y-2">
           
-          {/* Metadata Row */}
+          {/* Metadata Row - Shows job ID and date */}
           <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-            <span>{job.company}</span>
+            <span>ID: {job.id}</span>
             <span className="text-slate-300">•</span>
             <span>{formatFriendlyDate(job.postedAt)}</span>
           </div>
@@ -51,7 +51,7 @@ export const JobCard: React.FC<JobCardProps> = ({ job }) => {
           </div>
         </div>
 
-        {/* Job Type Badge */}
+        {/* Job Type */}
         <span className="self-start inline-flex items-center rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider bg-red-600 text-white border border-red-700">
           {job.type}
         </span>
@@ -68,7 +68,7 @@ export const JobCard: React.FC<JobCardProps> = ({ job }) => {
       >
         <div className="grid gap-6 border-t border-slate-200 pt-6 md:grid-cols-2">
           
-          {/* Requirements */}
+          {/* Job Requirements */}
           <div>
             <h4 className="text-sm font-bold text-slate-900">Requirements</h4>
             <ul className="mt-3 space-y-2.5 text-sm text-slate-600">
