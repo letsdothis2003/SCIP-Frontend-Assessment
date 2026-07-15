@@ -1,5 +1,4 @@
-/*This is an attempt at a job search and filer*/
-'use client';
+/*This is an attempt at a job search and filer */
 
 import React from 'react';
 import { FilterState } from '@/listing/job';

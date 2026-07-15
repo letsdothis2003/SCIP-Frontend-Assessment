@@ -36,6 +36,6 @@ export interface FilterState {
   department: string;
   /**Search for location; empty string indicates 'All' */
   location: string;
-  /**Searchfor employment type; empty string indicates 'All' */
+  /** Filter selection for employment type; empty string indicates 'All' */
   type: string;
 }

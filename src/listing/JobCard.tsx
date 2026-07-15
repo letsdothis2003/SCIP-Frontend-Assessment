@@ -19,6 +19,7 @@ const formatFriendlyDate = (dateString: string) => {
 };
 
 export const JobCard: React.FC<JobCardProps> = ({ job }) => {
+  // useState manages the expand/collapse UI state for clean, interactive component behavior.
   const [isExpanded, setIsExpanded] = useState(false);
 
   // I didn't set up a backend or contact form, so everything goes to scipleaders111@gmail.com

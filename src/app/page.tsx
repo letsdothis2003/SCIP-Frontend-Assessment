@@ -1,5 +1,6 @@
 'use client';
 
+//Page configuration state management  
 import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 import { FilterState, Job } from '@/listing/job';
@@ -11,7 +12,7 @@ import { CONFIG } from '@/config';
 const DEFAULT_FILTERS: FilterState = { searchQuery: '', department: '', location: '', type: '' };
 
 export default function Home() {
-  // This is just the main UI for the job filter this page.
+  // This is just the main UI for the job filter this page, using useState and useEffect for state and data fetching.
   const [jobs, setJobs] = useState<Job[]>([]);
   const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
   const [isLoading, setIsLoading] = useState(true);
@@ -130,9 +131,9 @@ export default function Home() {
           {/* Blue Highlight for banner */}
           <div className="banner-container">
             {/* Bolded & Underlined Careers so people can see it better */}
-<           h1 className="text-3xl font-extrabold tracking-widest uppercase mb-6 relative inline-block">
-             Careers
-            <span className="absolute bottom-0 left-0 w-full h-1 bg-sky-300 rounded-full" />
+            <h1 className="text-3xl font-extrabold tracking-widest uppercase mb-6 relative inline-block">
+              Careers
+              <span className="absolute bottom-0 left-0 w-full h-1 bg-sky-300 rounded-full" />
             </h1>
             <p className="careers-subtitle">
               Discover roles to get a chance to be a global leader!

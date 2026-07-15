@@ -1,4 +1,4 @@
-/*This would normally be the index file*/
+/*This would normally be the index file. I thought this name was more easier to understand. It usess app router for clean routing and layout structure.*/
 
 import "./globals.css";
 
@@ -12,7 +12,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         {/* This layout wraps every page in the app and loads global styles. */}
-        {/* It keeps the shell simple so each page can render with proper format. Without it, our site will look very ugly and disorganized as our padding is removed */}
+        {/* It keeps the shell simple so each page can render with proper format. Without it, our site will look very ugly and disorganized as our padding is removed. */}
+        {/* The RootLayout follows App Router conventions for a clean, maintainable component structure. */}
         {children}
       </body>
     </html>

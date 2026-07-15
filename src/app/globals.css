@@ -1,7 +1,5 @@
 /*This entire CSS creates the sizing and coloring along with orientation of assets of the entire webpage*/
-
-
-@import "tailwindcss";
+ @import "tailwindcss";
 
 :root {
   --background: white;
