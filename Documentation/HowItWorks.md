@@ -5,8 +5,8 @@ This is explaining what each file does
 
 ### `/app` Directory
 
-* **`SCIP Logo.png`**: PLEASE PROVIDE A BETTER LOGO, I CAN'T FIND A BETTER QUALITY ONE
-* **`globals.css`**: The central stylesheet importing Tailwind CSS and defining custom utility classes using `@apply`.
+* **`SCIP Logo.png`**: CAN'T FIND A BETTER QUALITY ONE
+* **`globals.css`**: Uses Tailwind CSS and defining custom utility classes using `@apply`. This helps with our site visuals 
 * **`layout.tsx`**: The index that structures the default page.
 * **`page.tsx`**: The main controller component that handles state management, API data fetching with out GISTand contains our page elements.
 
