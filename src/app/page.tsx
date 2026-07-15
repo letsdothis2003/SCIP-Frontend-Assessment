@@ -130,11 +130,12 @@ export default function Home() {
           {/* Blue Highlight for banner */}
           <div className="banner-container">
             {/* Bolded & Underlined Careers so people can see it better */}
-            <h1 className="careers-heading">
-              Careers
+<           h1 className="text-3xl font-extrabold tracking-widest uppercase mb-6 relative inline-block">
+             Careers
+            <span className="absolute bottom-0 left-0 w-full h-1 bg-sky-300 rounded-full" />
             </h1>
             <p className="careers-subtitle">
-              Discover roles across SCIP as everyone has a chance to be a global leader!
+              Discover roles to get a chance to be a global leader!
             </p>
           </div>
 
