@@ -6,5 +6,5 @@
 .nojekyll
 /src/config.ts
 /scripts/
- 
+next-env.d.ts
  
