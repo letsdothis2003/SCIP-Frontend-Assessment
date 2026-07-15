@@ -1,4 +1,3 @@
-// src/app/page.tsx
 'use client';
 
 import Image from 'next/image';
@@ -7,60 +6,9 @@ import { FilterState, Job } from '@/jobdata/job';
 import { JobFilters } from '@/listing/JobFilters';
 import { JobList } from '@/listing/JobList';
 import companyLogo from './SCIP Logo.png';
+import { CONFIG } from '@/config';
 
-<<<<<<< HEAD
-// Import the config values (these are NOT committed to git, DO NOT DO THAT)
-import { GIST_API_URL } from '@/config';  // adjust path if needed
-
-// The GIST_ID is now hidden inside config.ts – we only use the full URL.
-// No need to hardcode the Gist ID or API URL here anymore.
-
-// Gist ID extracted from the provided script URL
-// const GIST_ID = '5db6dbb14f1cea13818e137e3aabd0f7'; // moved to config.ts
-// const GIST_API_URL = `https://api.github.com/gists/${GIST_ID}`; // moved to config.ts
-
-=======
-const DEFAULT_GIST_URL = process.env.NEXT_PUBLIC_GIST_URL || 'https://gist.github.com/letsdothis2003/5db6dbb14f1cea13818e137e3aabd0f7';
->>>>>>> aa764d2f4827492fa13868ffc8326dcf32b6e3db
 const DEFAULT_FILTERS: FilterState = { searchQuery: '', department: '', location: '', type: '' };
-
-const extractGistId = (sourceUrl: string): string | null => {
-  try {
-    const parsedUrl = new URL(sourceUrl);
-    const pathname = parsedUrl.pathname;
-    const hostname = parsedUrl.hostname.toLowerCase();
-
-    if (hostname === 'api.github.com') {
-      const match = pathname.match(/\/gists\/([a-f0-9]{7,40})(?:\/|$)/i);
-      return match?.[1] ?? null;
-    }
-
-    if (hostname === 'gist.github.com') {
-      const match = pathname.match(/\/[^/]+\/([a-f0-9]{7,40})(?:\/|$)/i);
-      return match?.[1] ?? null;
-    }
-
-    if (hostname === 'gist.githubusercontent.com') {
-      const match = pathname.match(/\/([a-f0-9]{7,40})(?:\/|$)/i);
-      return match?.[1] ?? null;
-    }
-  } catch {
-    // Fall back to a regex-based parse below.
-  }
-
-  const fallbackMatch = sourceUrl.match(/(?:gist\.github\.com\/[^/]+\/|gist\.github\.com\/|gists\/)([a-f0-9]{7,40})(?:\/|$)/i);
-  return fallbackMatch?.[1] ?? null;
-};
-
-const getGistApiUrl = (sourceUrl: string): string => {
-  const gistId = extractGistId(sourceUrl);
-
-  if (!gistId) {
-    throw new Error('Please provide a valid GitHub gist URL.');
-  }
-
-  return `https://api.github.com/gists/${gistId}`;
-};
 
 export default function Home() {
   // The main data state for this page.
@@ -80,21 +28,8 @@ export default function Home() {
         setIsLoading(true);
         setError(null);
 
-<<<<<<< HEAD
-        // Step 1: Fetch Gist metadata using the config-provided URL
-        const gistResponse = await fetch(GIST_API_URL, {
-=======
-        const queryGistUrl =
-          typeof window !== 'undefined'
-            ? new URLSearchParams(window.location.search).get('gistUrl')
-            : null;
-
-        const sourceUrl = queryGistUrl?.trim() || DEFAULT_GIST_URL;
-        const gistApiUrl = getGistApiUrl(sourceUrl);
-
         // Step 1: Fetch Gist metadata
-        const gistResponse = await fetch(gistApiUrl, {
->>>>>>> aa764d2f4827492fa13868ffc8326dcf32b6e3db
+        const gistResponse = await fetch(CONFIG.GIST_API_URL, {
           headers: { Accept: 'application/vnd.github.v3+json' },
         });
         if (!gistResponse.ok) {
@@ -102,7 +37,6 @@ export default function Home() {
         }
         const gistData = await gistResponse.json();
 
-<<<<<<< HEAD
         // Find the first file that ends with .json, or fallback to the first file
         const files = gistData.files;
         const fileNames = Object.keys(files);
@@ -117,47 +51,13 @@ export default function Home() {
 
         const file = files[jsonFileName];
         const rawUrl = file.raw_url;
-=======
-        const files = gistData.files;
-        const fileNames = Object.keys(files || {});
-        let jsonFileName = fileNames.find((name) => name.endsWith('.json'));
-
-        if (!jsonFileName) {
-          jsonFileName = fileNames[0];
-        }
-
-        if (!jsonFileName) {
-          throw new Error('No files found in the Gist.');
-        }
-
-        const file = files[jsonFileName];
-        const rawUrl = file?.raw_url;
-
-        if (!rawUrl) {
-          throw new Error('The selected gist does not expose a raw JSON file.');
-        }
->>>>>>> aa764d2f4827492fa13868ffc8326dcf32b6e3db
 
         // Step 2: Fetch the raw content of the JSON file
         const jobsResponse = await fetch(rawUrl);
         if (!jobsResponse.ok) {
           throw new Error(`Failed to fetch job data: ${jobsResponse.status}`);
         }
-<<<<<<< HEAD
         const data = (await jobsResponse.json()) as Job[];
-=======
-
-        const payload = await jobsResponse.json();
-        const data = Array.isArray(payload)
-          ? payload
-          : Array.isArray(payload?.jobs)
-            ? payload.jobs
-            : null;
-
-        if (!Array.isArray(data)) {
-          throw new Error('The gist JSON must resolve to a jobs array.');
-        }
->>>>>>> aa764d2f4827492fa13868ffc8326dcf32b6e3db
 
         if (isMounted) {
           setJobs(data);
