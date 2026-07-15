@@ -1,6 +1,6 @@
 'use client';
 
-//Page configuration state management  
+//Page configuration and state management  
 import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 import { FilterState, Job } from '@/listing/job';
