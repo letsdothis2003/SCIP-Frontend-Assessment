@@ -7,4 +7,7 @@
 /src/config.ts
 /scripts/
 next-env.d.ts
- 
+package.json
+postcss.config.mjs
+tsconfig.json
+tsconfig.tsbuildinfo
