@@ -11,10 +11,7 @@ import { CONFIG } from '@/config';
 const DEFAULT_FILTERS: FilterState = { searchQuery: '', department: '', location: '', type: '' };
 
 export default function Home() {
-  // The main data state for this page.
-  // jobs hold the full list, filters track the active filter values,
-  // isLoading tracks whether the page is still fetching data,
-  // and error holds a friendly error message if fetching fails.
+  // This is just the main UI for the job filter this page.
   const [jobs, setJobs] = useState<Job[]>([]);
   const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
   const [isLoading, setIsLoading] = useState(true);
@@ -105,15 +102,15 @@ export default function Home() {
   }, [jobs, filters]);
 
   const handleResetFilters = () => {
-    // Put everything back to the default empty state.
+    // Put everything back to the default empty state for clear filter buton.
     setFilters(DEFAULT_FILTERS);
   };
 
   return (
-    <div className="min-h-screen bg-white text-black">
+    <div className="min-h-screen bg-white text-black font-['Inter',_system-ui,_-apple-system,_sans-serif]">
       {/* Added a grid texture because the plain white looked boring */}
       <header className="relative overflow-hidden border-b border-slate-200 bg-slate-100">
-        {/* This is a placeholder for now*/}
+        {/* This is a placeholder for now, you can replace the grid texture with an image*/}
         <div 
           className="absolute inset-0 opacity-[0.03] pointer-events-none"
           style={{
@@ -127,7 +124,7 @@ export default function Home() {
 
         <div className="relative z-10 mx-auto max-w-4xl px-6 py-16 flex flex-col items-center text-center">
           
-          {/* Centered Logo - Height expanded to h-64 to let the width grow larger */}
+          {/* Logo, kept it large and centered based on my preference */}
           <div className="mb-8 w-full flex justify-center">
             <Image 
               src={companyLogo} 
@@ -142,10 +139,10 @@ export default function Home() {
           {/* Blue Highlight for banner */}
           <div className="w-full max-w-3xl bg-sky-800 text-white rounded-2xl p-8 md:p-10 shadow-lg border border-sky-700/50">
             {/* Bolded & Underlined Careers so people can see it better */}
-            <h1 className="text-3xl font-extrabold tracking-widest uppercase mb-6 underline decoration-sky-300 decoration-4 underline-offset-8">
+            <h1 className="text-3xl font-light tracking-[0.3em] uppercase mb-6 underline decoration-sky-300 decoration-4 underline-offset-8">
               Careers
             </h1>
-            <p className="text-lg sm:text-xl font-medium leading-relaxed text-white/95">
+            <p className="text-lg sm:text-xl font-light leading-relaxed text-white/95 tracking-wide">
               Discover roles across SCIP as everyone has a chance to be a global leader!
             </p>
           </div>
@@ -175,7 +172,7 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="footer-brand bg-sky-900 px-6 py-8 text-center text-sm text-white mt-12">
+      <footer className="footer-brand bg-sky-900 px-6 py-8 text-center text-sm text-white mt-12 font-light tracking-wide">
         <p>© {new Date().getFullYear()} SCIP. All rights reserved.</p>
       </footer>
     </div>
