@@ -1,3 +1,4 @@
+/*This is an attempt at a job search and filer*/
 'use client';
 
 import React from 'react';
@@ -20,22 +21,23 @@ export const JobFilters: React.FC<JobFiltersProps> = ({
   types,
   onReset,
 }) => {
+  // Update the search term while keeping the existing select filters.
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // Update the search term while keeping the existing select filters.
     onFilterChange({
       ...filters,
       searchQuery: event.target.value,
     });
   };
 
+  // Update one select field at a time.
   const handleSelectChange = (key: keyof Omit<FilterState, 'searchQuery'>, value: string) => {
-    // Update one select field at a time.
     onFilterChange({
       ...filters,
       [key]: value,
     });
   };
 
+  // Checks if any filter is actively set so we know when to show the clear button.
   const hasActiveFilters =
     filters.searchQuery.trim() !== '' ||
     filters.department !== '' ||
@@ -45,6 +47,7 @@ export const JobFilters: React.FC<JobFiltersProps> = ({
   return (
     <section className="rounded-2xl border border-black/10 bg-white p-5">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end">
+        {/* Search input field */}
         <div className="flex-1">
           <label htmlFor="job-search-input" className="mb-2 block text-sm font-medium text-black">
             Search roles
@@ -59,7 +62,9 @@ export const JobFilters: React.FC<JobFiltersProps> = ({
           />
         </div>
 
+        {/* Filter dropdowns */}
         <div className="grid flex-1 gap-4 md:grid-cols-3">
+          {/* Department filter */}
           <div>
             <label htmlFor="filter-department" className="mb-2 block text-sm font-medium text-black">
               Department
@@ -79,6 +84,7 @@ export const JobFilters: React.FC<JobFiltersProps> = ({
             </select>
           </div>
 
+          {/* Location filter */}
           <div>
             <label htmlFor="filter-location" className="mb-2 block text-sm font-medium text-black">
               Location
@@ -98,6 +104,7 @@ export const JobFilters: React.FC<JobFiltersProps> = ({
             </select>
           </div>
 
+          {/* Job type filter */}
           <div>
             <label htmlFor="filter-type" className="mb-2 block text-sm font-medium text-black">
               Job type
@@ -119,6 +126,7 @@ export const JobFilters: React.FC<JobFiltersProps> = ({
         </div>
       </div>
 
+      {/* Clear button appears only when at least one filter is active */}
       {hasActiveFilters && (
         <div className="mt-4 flex justify-end">
           <button

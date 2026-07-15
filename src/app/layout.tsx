@@ -1,3 +1,5 @@
+/*This would normally be the index file*/
+
 import "./globals.css";
 
 export const metadata = {
@@ -10,7 +12,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         {/* This layout wraps every page in the app and loads global styles. */}
-        {/* It keeps the shell simple so each page can render without extra noise. */}
+        {/* It keeps the shell simple so each page can render with proper format. Without it, our site will look very ugly and disorganized as our padding is removed */}
         {children}
       </body>
     </html>

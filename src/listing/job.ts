@@ -2,15 +2,15 @@
  * Represents the structure of a single job opening in the system.
  */
 export interface Job {
-  /** Unique identifier for the job post (e.g., 'job-1') */
+  /** Unique identifier for the job post (job or application id) */
   id: string;
-  /** Title of the job position (e.g., 'Senior Frontend Engineer') */
+  /** Title of the job position */
   title: string;
   /** The name of the hiring company */
   company: string;
-  /** The department/division (e.g., 'Engineering', 'Design', 'Marketing', 'Product') */
+  /** The department/division*/
   department: string;
-  /** The location details (e.g., 'Remote', 'New York', 'London', 'San Francisco') */
+  /** The location details*/
   location: string;
   /** The employment agreement type */
   type: string;
@@ -30,12 +30,12 @@ export interface Job {
  * Represents the active filtering state of the job board search interface.
  */
 export interface FilterState {
-  /** Free text query to search against job titles */
+  /** For search against job titles */
   searchQuery: string;
-  /** Filter selection for department; empty string indicates 'All' */
+  /**Search for department; empty string indicates 'All' */
   department: string;
-  /** Filter selection for location; empty string indicates 'All' */
+  /**Search for location; empty string indicates 'All' */
   location: string;
-  /** Filter selection for employment type; empty string indicates 'All' */
+  /**Searchfor employment type; empty string indicates 'All' */
   type: string;
 }

@@ -1,40 +1,30 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { Job } from '@/listing/job';
 
 interface JobCardProps {
   job: Job;
 }
 
-// Helper function extracted outside the component to prevent recreation on every render cycle
-const formatFriendlyDate = (dateString: string): string => {
-  try {
-    const parsedDate = new Date(dateString);
-    if (isNaN(parsedDate.getTime())) return dateString;
-    
-    return parsedDate.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  } catch {
-    return dateString;
-  }
+// Just making the date look friendly for humans
+const formatFriendlyDate = (dateString: string) => {
+  const parsed = new Date(dateString);
+  if (isNaN(parsed.getTime())) return dateString;
+  return parsed.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
 };
 
 export const JobCard: React.FC<JobCardProps> = ({ job }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // Memoize formatted date so it only recalculates when job.postedAt changes
-  const formattedDate = useMemo(() => formatFriendlyDate(job.postedAt), [job.postedAt]);
-
-  // Safe browser-only email dispatch pointing to scipleaders111@gmail.com
+  // I didn’t set up a backend or contact form, so everything goes to scipleaders111@gmail.com
   const handleApplyClick = () => {
-    if (typeof window !== 'undefined') {
-      const subject = encodeURIComponent(`Application for ${job.title}`);
-      window.location.href = `mailto:scipleaders111@gmail.com?subject=${subject}`;
-    }
+    const subject = encodeURIComponent(`Application for ${job.title}`);
+    window.location.href = `mailto:scipleaders111@gmail.com?subject=${subject}`;
   };
 
   return (
@@ -48,12 +38,12 @@ export const JobCard: React.FC<JobCardProps> = ({ job }) => {
           <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
             <span>{job.company}</span>
             <span className="text-slate-300">•</span>
-            <span>{formattedDate}</span>
+            <span>{formatFriendlyDate(job.postedAt)}</span>
           </div>
 
           <h3 className="text-xl font-bold text-slate-900">{job.title}</h3>
 
-          {/* Quick Badges */}
+          {/* Quick badges for department, location, and salary */}
           <div className="flex flex-wrap items-center gap-2 text-xs font-semibold mt-2">
             <span className="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sky-800">{job.department}</span>
             <span className="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sky-800">{job.location}</span>
@@ -61,16 +51,16 @@ export const JobCard: React.FC<JobCardProps> = ({ job }) => {
           </div>
         </div>
 
-        {/* Job Type Pill Badge */}
+        {/* Job Type Badge */}
         <span className="self-start inline-flex items-center rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider bg-red-600 text-white border border-red-700">
           {job.type}
         </span>
       </div>
 
-      {/* Main Pitch */}
+      {/* Main description */}
       <p className="mt-4 text-sm leading-relaxed text-slate-600">{job.description}</p>
 
-      {/* Collapsible details container with dynamic height transitions */}
+      {/* Collapsible details section */}
       <div 
         className={`overflow-hidden transition-all duration-300 ease-in-out ${
           isExpanded ? 'mt-6 max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
@@ -78,7 +68,7 @@ export const JobCard: React.FC<JobCardProps> = ({ job }) => {
       >
         <div className="grid gap-6 border-t border-slate-200 pt-6 md:grid-cols-2">
           
-          {/* Requirements column */}
+          {/* Requirements */}
           <div>
             <h4 className="text-sm font-bold text-slate-900">Requirements</h4>
             <ul className="mt-3 space-y-2.5 text-sm text-slate-600">
@@ -91,7 +81,7 @@ export const JobCard: React.FC<JobCardProps> = ({ job }) => {
             </ul>
           </div>
 
-          {/* Benefits column */}
+          {/* Benefits */}
           <div>
             <h4 className="text-sm font-bold text-slate-900">Benefits</h4>
             <ul className="mt-3 space-y-2.5 text-sm text-slate-600">
@@ -104,7 +94,7 @@ export const JobCard: React.FC<JobCardProps> = ({ job }) => {
             </ul>
           </div>
 
-          {/* Call To Action Row */}
+          {/* Apply button */}
           <div className="md:col-span-2 flex justify-end pt-4">
             <button
               type="button"
@@ -117,7 +107,7 @@ export const JobCard: React.FC<JobCardProps> = ({ job }) => {
         </div>
       </div>
 
-      {/* Action Toggle Switch */}
+      {/* Toggle button for expanding/collapsing */}
       <div className="mt-6 flex justify-center border-t border-slate-100 pt-4">
         <button
           type="button"

@@ -39,17 +39,17 @@ export default function Home() {
         const fileNames = Object.keys(files);
         let jsonFileName = fileNames.find((name) => name.endsWith('.json'));
         if (!jsonFileName) {
-          // If no .json file, use the first file (assume it's JSON)
+          // If no .json file, use the first file (assuming it's JSON)
           jsonFileName = fileNames[0];
         }
         if (!jsonFileName) {
-          throw new Error('No files found in the Gist.');
+          throw new Error('No files found in the Gist.'); //throw error
         }
 
         const file = files[jsonFileName];
         const rawUrl = file.raw_url;
 
-        // Step 2: Fetch the raw content of the JSON file
+        // Step 2: Fetch the content of the JSON file(in this case job info)
         const jobsResponse = await fetch(rawUrl);
         if (!jobsResponse.ok) {
           throw new Error(`Failed to fetch job data: ${jobsResponse.status}`);
@@ -109,40 +109,31 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white text-black font-['Inter',_system-ui,_-apple-system,_sans-serif]">
       {/* Added a grid texture because the plain white looked boring */}
-      <header className="relative overflow-hidden border-b border-slate-200 bg-slate-100">
+      <header className="header-container">
         {/* This is a placeholder for now, you can replace the grid texture with an image*/}
-        <div 
-          className="absolute inset-0 opacity-[0.03] pointer-events-none"
-          style={{
-            backgroundImage: `
-              linear-gradient(to right, #000 1px, transparent 1px),
-              linear-gradient(to bottom, #000 1px, transparent 1px)
-            `,
-            backgroundSize: '24px 24px'
-          }}
-        />
+        <div className="grid-texture" />
 
         <div className="relative z-10 mx-auto max-w-4xl px-6 py-16 flex flex-col items-center text-center">
           
           {/* Logo, kept it large and centered based on my preference */}
-          <div className="mb-8 w-full flex justify-center">
+          <div className="logo-wrapper">
             <Image 
               src={companyLogo} 
               alt="SCIP logo" 
               width={600} 
               height={180} 
-              className="h-64 w-auto object-contain" 
+              className="logo-image" 
               priority
             />
           </div>
 
           {/* Blue Highlight for banner */}
-          <div className="w-full max-w-3xl bg-sky-800 text-white rounded-2xl p-8 md:p-10 shadow-lg border border-sky-700/50">
+          <div className="banner-container">
             {/* Bolded & Underlined Careers so people can see it better */}
-            <h1 className="text-3xl font-light tracking-[0.3em] uppercase mb-6 underline decoration-sky-300 decoration-4 underline-offset-8">
+            <h1 className="careers-heading">
               Careers
             </h1>
-            <p className="text-lg sm:text-xl font-light leading-relaxed text-white/95 tracking-wide">
+            <p className="careers-subtitle">
               Discover roles across SCIP as everyone has a chance to be a global leader!
             </p>
           </div>
@@ -151,7 +142,7 @@ export default function Home() {
       </header>
 
       {/* Main Content Area */}
-      <main className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-8 lg:px-8">
+      <main className="main-content">
         <JobFilters
           filters={filters}
           onFilterChange={setFilters}
@@ -162,9 +153,9 @@ export default function Home() {
         />
 
         {error ? (
-          <div className="rounded-2xl border border-black/10 bg-black/5 p-6 text-center text-black">
-            <h2 className="text-lg font-semibold">We could not load these listings</h2>
-            <p className="mt-2 text-sm text-black/70">{error}</p>
+          <div className="error-container">
+            <h2 className="error-title">We could not load these listings</h2>
+            <p className="error-message">{error}</p>
           </div>
         ) : (
           <JobList jobs={filteredJobs} isLoading={isLoading} />
@@ -172,7 +163,7 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="footer-brand bg-sky-900 px-6 py-8 text-center text-sm text-white mt-12 font-light tracking-wide">
+      <footer className="footer-brand bg-sky-900 px-6 py-8 text-center text-sm text-white mt-12 footer-text">
         <p>© {new Date().getFullYear()} SCIP. All rights reserved.</p>
       </footer>
     </div>
