@@ -79,14 +79,12 @@ I added a JSON file hosted on **Gist**, inspired by the actual SCIP job postings
 ---
 
 ## **Missed Opportunities**
-I tried to fulfill every requirement, but there are areas I feel I could have improved with more time:
 
-- The top portion of the layout is too large.
-- I attempted the **60/30/10 color rule** using white, blue, and red, but I wasn’t fully confident the shades and placement were visually appealing.
-- I completed all required steps, though I wish I had implemented the bonus unit test.
-- I had no backend. I wish I could have integrated real Google Forms for roles based on actual SCIP postings, or created custom forms for the fictional roles.  
-  Alternatively, I could have set up a basic web form that performs a POST/GET instead of redirecting users out of the browser.
--Better, proffesional looking font
+- The top portion of the layout is larger than necessary and could be tightened for better visual balance.  
+- I attempted the **60/30/10 color rule** using white, blue, and red, but I wasn’t fully confident that the chosen shades and their placement were visually appealing.  
+- I completed all required steps, though I wish I had implemented the bonus unit test.  
+- I had no backend. I would have liked to integrate real Google Forms for roles based on actual SCIP postings or create custom forms for the fictional roles. Alternatively, I could have set up a basic web form that performs a POST/GET instead of redirecting users out of the browser.  
+- I could have selected a more professional‑looking fonts. 
 
 ---
 
