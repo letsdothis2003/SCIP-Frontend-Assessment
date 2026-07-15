@@ -26,7 +26,7 @@ export default function Home() {
         setIsLoading(true);
         setError(null);
 
-        // Step 1: Fetch Gist metadata
+        // Step 1: Fetch Gist metadata. THIS IS WHERE THE API OR JSON WITH THE JOBS IS PROCESSED through the url(its in a config.ts file) 
         const gistResponse = await fetch(CONFIG.GIST_API_URL, {
           headers: { Accept: 'application/vnd.github.v3+json' },
         });
