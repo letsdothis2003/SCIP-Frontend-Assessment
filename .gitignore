@@ -1,8 +1,11 @@
-node_modules/
-.next/
+
+/node_modules
+/.next
+/out
 .env*.local
-public/jobs.json
-.next/
-out/
 .nojekyll
-src/config.ts
+/src/config.ts
+/scripts
+ 
+ 
+ 
