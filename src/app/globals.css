@@ -19,7 +19,7 @@ body {
   font-family: system-ui, -apple-system, sans-serif;
 }
 
-/* Listing boxes following SCIP 60/30/10 rule */
+/* For the job listing cards*/
 .brand-blue-panel {
   @apply bg-sky-800 text-white rounded-2xl p-6 shadow-sm;
 }
