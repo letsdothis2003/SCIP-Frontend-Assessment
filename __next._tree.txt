@@ -1,2 +1,2 @@
 :HL["/SCIP-Frontend-Assessment/_next/static/chunks/3jcj-zfh0gmhk.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}},"staleTime":300,"buildId":"47kNPdntrMlS_dK32_63v"}
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}},"staleTime":300,"buildId":"otW4hdafKMXgkOPlCiVJw"}
