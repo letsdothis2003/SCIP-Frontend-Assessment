@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Job } from '@/jobdata/job';
+import { Job } from '@/listing/job';
 
 interface JobCardProps {
   job: Job;
@@ -62,7 +62,7 @@ export const JobCard: React.FC<JobCardProps> = ({ job }) => {
         </div>
 
         {/* Job Type Pill Badge */}
-        <span className="self-start inline-flex items-center rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider bg-rose-600 text-white border border-rose-700">
+        <span className="self-start inline-flex items-center rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider bg-red-600 text-white border border-red-700">
           {job.type}
         </span>
       </div>
@@ -97,7 +97,7 @@ export const JobCard: React.FC<JobCardProps> = ({ job }) => {
             <ul className="mt-3 space-y-2.5 text-sm text-slate-600">
               {job.benefits.map((benefit, index) => (
                 <li key={`ben-${index}`} className="flex items-start gap-2.5">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-rose-600" />
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-red-600" />
                   <span>{benefit}</span>
                 </li>
               ))}
@@ -108,7 +108,7 @@ export const JobCard: React.FC<JobCardProps> = ({ job }) => {
           <div className="md:col-span-2 flex justify-end pt-4">
             <button
               type="button"
-              className="cta-red-button px-6 py-2.5 bg-rose-600 text-white font-bold rounded-xl shadow hover:bg-rose-700 transition"
+              className="cta-red-button px-6 py-2.5 bg-red-600 text-white font-bold rounded-xl shadow hover:bg-red-700 transition"
               onClick={handleApplyClick}
             >
               Apply now
@@ -122,7 +122,7 @@ export const JobCard: React.FC<JobCardProps> = ({ job }) => {
         <button
           type="button"
           onClick={() => setIsExpanded((prev) => !prev)}
-          className="rounded-xl border border-rose-600 bg-rose-600 px-5 py-2 text-sm font-bold text-white transition hover:bg-rose-700"
+          className="rounded-xl border border-red-600 bg-red-600 px-5 py-2 text-sm font-bold text-white transition hover:bg-red-700"
           aria-expanded={isExpanded}
         >
           {isExpanded ? 'Hide details' : 'View details'}

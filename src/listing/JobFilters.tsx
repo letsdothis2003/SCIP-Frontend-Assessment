@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { FilterState } from '@/jobdata/job';
+import { FilterState } from '@/listing/job';
 
 interface JobFiltersProps {
   filters: FilterState;

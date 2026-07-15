@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Job } from '@/jobdata/job';
+import { Job } from '@/listing/job';
 import { JobCard } from './JobCard';
 
 interface JobListProps {

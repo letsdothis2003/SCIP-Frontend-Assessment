@@ -28,7 +28,7 @@ body {
 }
 
 .brand-red-text {
-  @apply text-rose-600;
+  @apply text-red-600;
 }
 
 
@@ -54,11 +54,11 @@ body {
 }
 
 .cta-red-button {
-  @apply rounded-lg border border-rose-600 bg-rose-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-rose-700;
+  @apply rounded-lg border border-red-600 bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-700;
 }
 
 .cta-red-link {
-  @apply text-rose-600 font-semibold hover:text-rose-700;
+  @apply text-red-600 font-semibold hover:text-red-700;
 }
 
 /* Form controls */
@@ -70,7 +70,7 @@ body {
 }
 
 .filter-clear-button {
-  @apply rounded-full border border-rose-600 bg-rose-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-rose-700;
+  @apply rounded-full border border-red-600 bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-700;
 }
 
 .footer-brand {
